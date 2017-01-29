@@ -31,17 +31,13 @@ class ServiceProvider extends BaseServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['breadcrumbs'] = $this->app->share(function($app)
+		$this->app->singleton('breadcrumbs', function($app)
 		{
-			$breadcrumbs = $this->app->make('DaveJamesMiller\Breadcrumbs\Manager');
-
+			$breadcrumbs = $this->app->make(Manager::class);
 			$viewPath = __DIR__ . '/../views/';
-
 			$this->loadViewsFrom($viewPath, 'breadcrumbs');
 			$this->loadViewsFrom($viewPath, 'laravel-breadcrumbs'); // Backwards-compatibility with 2.x
-
 			$breadcrumbs->setView($app['config']['breadcrumbs.view']);
-
 			return $breadcrumbs;
 		});
 	}
